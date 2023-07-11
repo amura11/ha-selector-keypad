@@ -1,0 +1,25 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "npm",
+            "script": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "label": "npm: build",
+            "detail": "rollup -c",
+            "problemMatcher": {
+                "pattern": [
+                    {
+                        "regexp": ".",
+                        "file": 1,
+                        "location": 2,
+                        "message": 3
+                    }
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,5 @@
+{
+    "name": "Custom Keypad Selector",
+    "render_readme": true,
+    "filename": "ha-selector-keypad.js"
+}
