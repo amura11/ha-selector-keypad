@@ -6,25 +6,20 @@ on:
 
 jobs:
   release:
-    name: Prepare release
+    name: Release
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - name: "Checkout the repository"
+        uses: "actions/checkout@v3.5.3"
 
-      # Build
-      - name: Build the file
+      - name: "Build the plugin"
+        shell: "bash"
         run: |
-          cd /home/runner/work/ha-selector-keypad/ha-selector-keypad
+          cd "${{ github.workspace }}"
           npm install
           npm run build
 
-      # Upload build file to the release as an asset.
-      - name: Upload zip to release
-        uses: svenstaro/upload-release-action@v1-release
-
+      - name: "Upload the compiled plugin"
+        uses: "softprops/action-gh-release@v0.1.15"
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: /home/runner/work/ha-selector-keypad/ha-selector-keypad/dist/ha-selector-keypad.js
-          asset_name: ha-selector-keypad.js
-          tag: ${{ github.ref }}
-          overwrite: true
+          files: ${{ github.workspace }}/dist/ha-selector-keypad.js
