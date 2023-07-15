@@ -1,6 +1,6 @@
 {
     "name": "ha-selector-keypad",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "A custom Home Assistant number selector that displays a keypad. Primarily useful for custom alarm cards.",
     "scripts": {
         "build": "rollup -c"
@@ -12,6 +12,7 @@
         "@rollup/plugin-commonjs": "^25.0.2",
         "@rollup/plugin-json": "^6.0.0",
         "@rollup/plugin-node-resolve": "^15.1.0",
+        "@rollup/plugin-terser": "^0.4.3",
         "@rollup/plugin-typescript": "^11.1.2",
         "@types/lodash": "^4.14.195",
         "rollup": "^3.26.2",

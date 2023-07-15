@@ -1,8 +1,8 @@
 import { CSSResultGroup, LitElement, TemplateResult, css, html, nothing } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
 import { HomeAssistant, fireEvent } from 'custom-card-helpers';
-import { KeypadSelector } from './types';
-import { rangeRight } from 'lodash';
+import { KeypadSelector, KeypadSelectorKey } from './types';
+import { isString } from 'lodash';
 import * as packageData from '../package.json';
 import '@material/web/button/text-button';
 
@@ -14,15 +14,28 @@ console.info(
     'color: black; font-weight: bold; background: rgb(245, 245, 245)',
 );
 
-const DEFAULTS = {
-    show_code: true,
-    show_label: true,
-    columns: 3,
-    mask: null
-};
+const DELETE_KEY: string = "__DELETE__";
+const CLEAR_KEY: string = "__CLEAR__"
+const ICON_REGEX: RegExp = /^mdi:[a-zA-Z0-9\-]+$/gm
 
-const DELETE_KEY = "__DELETE__";
-const CLEAR_KEY = "__CLEAR__"
+const DEFAULT_SHOW_CODE: boolean = true;
+const DEFAULT_SHOW_LABEL: boolean = true;
+const DEFAULT_COLUMNS: number = 3;
+const DEFAULT_KEYS: Array<KeypadSelectorKey> = [
+    { key: "7" },
+    { key: "8" },
+    { key: "9" },
+    { key: "4" },
+    { key: "5" },
+    { key: "6" },
+    { key: "1" },
+    { key: "2" },
+    { key: "3" },
+    { key: DELETE_KEY },
+    { key: "0" },
+    { key: CLEAR_KEY }
+];
+
 
 @customElement("ha-selector-keypad")
 export class HaKeypadSelector extends LitElement {
@@ -44,24 +57,19 @@ export class HaKeypadSelector extends LitElement {
     private _tokens!: Array<string>;
 
     private get showLabel(): boolean {
-        return this.selector.keypad?.show_label ?? DEFAULTS.show_label;
+        return this.selector.keypad?.show_label ?? DEFAULT_SHOW_LABEL;
     }
 
     private get showCode(): boolean {
-        return this.selector.keypad?.show_code ?? DEFAULTS.show_code;
-
+        return this.selector.keypad?.show_code ?? DEFAULT_SHOW_CODE;
     }
 
     private get columnCount(): number {
-        return this.selector.keypad?.columns ?? DEFAULTS.columns;
+        return this.selector.keypad?.columns ?? DEFAULT_COLUMNS;
     }
 
-    private get keys(): Array<string> {
-        var keyList: Array<string> = rangeRight(10).map(x => x.toString());
-
-        const insertIndex = keyList.length - (keyList.length % this.columnCount);
-
-        return [...keyList.slice(0, insertIndex), CLEAR_KEY, ...keyList.slice(insertIndex), DELETE_KEY];
+    private get keys(): Array<KeypadSelectorKey> {
+        return this.selector.keypad?.keys ?? DEFAULT_KEYS;
     }
 
     private get rawCode(): string {
@@ -80,26 +88,28 @@ export class HaKeypadSelector extends LitElement {
         return toReturn;
     }
 
-    private renderKey(key: string): TemplateResult {
+    private renderKey(key: KeypadSelectorKey): TemplateResult {
         var keyContent: TemplateResult;
         var keyStyle: string = `width: calc((100% * (1/${this.columnCount})) - (2 * var(--hakp-key-padding)));`;
 
-        if (key == DELETE_KEY) {
-            keyContent = html`<ha-icon icon="mdi:backspace-outline"></ha-icon>`;
-        } else if (key == CLEAR_KEY) {
-            keyContent = html`<ha-icon icon="mdi:close-circle-outline"></ha-icon>`;
+        if (isString(key.key) && key.key.match(ICON_REGEX)) {
+            keyContent = html`<ha-icon icon="${key.key}"></ha-icon>`;
+        } else if (key.key == DELETE_KEY) {
+            keyContent = html`<ha-icon icon="mdi:backspace-outline"></ha-icon>`
+        } else if (key.key == CLEAR_KEY) {
+            keyContent = html`<ha-icon icon="mdi:close-circle-outline"></ha-icon>`
         } else {
-            keyContent = html`${key}`;
+            keyContent = html`${key.key}`;
         }
 
         return html`
-            <md-text-button class="hakp-key" style="${keyStyle}" @click=${() => this.onKeyPressed(key)}>
+            <md-text-button class="hakp-key" style="${keyStyle}" @click=${() => this.onKeyPressed(key.value ?? key.key)}>
                 ${keyContent}
             </md-text-button>
         `;
     }
 
-    private onKeyPressed(token: string) {
+    private onKeyPressed(token: string | number) {
         var isUpdateRequired: boolean = false;
 
         if (token == DELETE_KEY) {
@@ -113,7 +123,7 @@ export class HaKeypadSelector extends LitElement {
                 isUpdateRequired = true;
             }
         } else {
-            this._tokens.push(token);
+            this._tokens.push(token.toString());
             isUpdateRequired = true;
         }
 

@@ -8,7 +8,11 @@
 
 A simple keypad [selector](https://www.home-assistant.io/docs/blueprint/selectors/) for Home Assistant. Allows you to add a keypad for text input. Primarily built for use with [Browser Mod](https://github.com/thomasloven/hass-browser_mod) when using [form content](https://github.com/thomasloven/hass-browser_mod/blob/master/documentation/popups.md#form-content) but can be used anywhere a selector can.
 
-## Basic Example
+## Examples
+
+### Basic
+<img align="right" width="300px" style="margin-left: 1.25em;" src="basic-example.png">
+
 ```
 service: browser_mod.popup
 data:
@@ -20,8 +24,42 @@ data:
         keypad:
           mask: '*'
 ```
+<br clear="both"/>
+
+### Kitchen Sink
+
+<img align="right" width="300px" style="margin-left: 1.25em;" src="kitchen-sink-example.png">
+
+```
+service: browser_mod.popup
+data:
+  title: Enter Value
+  content:
+    - name: my_keypad
+      label: Enter a Value
+      selector:
+        keypad:
+          mask: '*'
+          show_label: false
+          show_code: true
+          columns: 2
+          keys:
+            - key: 1
+            - key: "2"
+            - key: 3️⃣
+            - key: "four"
+              value: 4
+            - key: 5️⃣
+              value: "five"
+            - key: mdi:plus
+              value: 6
+            - key: mdi:delete-outline
+              value: __CLEAR__
+```
+<br clear="both"/>
 
 ## Installation
+
 ### Manually
 1. Copy the files from the `dist` directory to the `<config>/www/`
 1. Add the following to the `configuration.yaml` file:
@@ -52,12 +90,50 @@ lovelace:
 
 ## Configuration Options
 
+### Keypad
 Name | Type | Description | Default
 -- | -- | -- | -- 
 `columns` | number | The maximum number of keys a row can have. | 3
 `mask` | string | A character or string to mask the code value when it's displayed. If `null` the raw code value is displayed. This only changes the display of the code not it's internal value. | `null` |
 `show_code` | boolean | A flag to render the code section or not | `true`
 `show_label`| boolean | A flag to render the label section or not | `true`
+`keys` | array | An array of key configurations. | `null`*
+
+* When no keys are specified the default keypad is used (number 0 through 9, delete, and clear)
+
+### Keys
+The keys of the keypad can be completely customized by specifying the `keys` array. Keys are read from left to right and top to bottom based on the `columns` value. Each key requires a label and has an optional `value` field that allows for a different value to be used when the key is pressed. This results in two different formats `keys` can be specified and are described below.
+
+#### Short Format
+In the short format there is no distinction between label and value, they are considered the same. The value specified for the key will also be the label. 
+
+```
+- key: 1
+- key: "Abc"
+- key: "mdi:plus"
+```
+
+#### Full Format
+In the full format you specify the label and the value explicitly. The value can be a `string` or `number`.
+
+```
+- key: 1
+  value: 5
+- key: "Abc"
+  value: 7
+- key: "mdi:plus"
+  value: "+"
+```
+
+#### Values
+Values can be a `string` or a `number`. In the short format if an icon is specified the string name of the icon, eg. `mdi:plus`, is used. There are two special values for the delete key and the clear key:
+- `__DELETE__`
+- `__CLEAR__`
+
+The labels for these can be customized the same as regular keys and will default to `mdi:backspace-outline` and `mdi:close-circle-outline`.
+
+As values can contain multiple characters, eg `abc` or `123`, each value is treated as a single token and all of the logic in the keypad works off of tokens. For example, when masking a key with a value of `123` with the `*` character you would only see 1 `*` each time you pressed that key. The delete key works in a similar way, if you pressed the same key twice (without a mask) you would see `123123` then pressed delete the resulting code would be `123`.
+
 
 [releases-shield]: https://img.shields.io/github/release/amura11/ha-selector-keypad.svg?style=for-the-badge
 [releases]: https://github.com/amura11/ha-selector-keypad/releases

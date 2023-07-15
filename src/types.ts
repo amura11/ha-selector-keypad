@@ -4,10 +4,11 @@ export interface KeypadSelector {
         show_label?: boolean
         columns?: number
         mask?: string
+        keys?: Array<KeypadSelectorKey>
     } | null
 }
 
-export interface KeypadKey {
-    value: string,
-    label?: string
+export interface KeypadSelectorKey {
+    key: string | number,
+    value?: string
 }
