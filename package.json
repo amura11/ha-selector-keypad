@@ -14,7 +14,7 @@
         "@rollup/plugin-node-resolve": "^15.1.0",
         "@rollup/plugin-terser": "^0.4.3",
         "@rollup/plugin-typescript": "^11.1.2",
-        "@types/lodash": "^4.14.195",
+        "@types/lodash": "^4.14.196",
         "rollup": "^3.26.2",
         "typescript": "^5.1.6"
     },
