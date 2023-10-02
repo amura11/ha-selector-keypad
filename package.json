@@ -9,7 +9,7 @@
     "license": "ISC",
     "type": "module",
     "devDependencies": {
-        "@rollup/plugin-commonjs": "^25.0.2",
+        "@rollup/plugin-commonjs": "^25.0.4",
         "@rollup/plugin-json": "^6.0.0",
         "@rollup/plugin-node-resolve": "^15.1.0",
         "@rollup/plugin-terser": "^0.4.3",
@@ -21,7 +21,7 @@
     "dependencies": {
         "@material/web": "^1.0.0-pre.12",
         "custom-card-helpers": "^1.9.0",
-        "lit": "^2.7.6",
+        "lit": "^2.8.0",
         "lodash": "^4.17.21"
     }
 }
