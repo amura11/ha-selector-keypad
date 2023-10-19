@@ -90,7 +90,7 @@ export class HaKeypadSelector extends LitElement {
 
     private renderKey(key: KeypadSelectorKey): TemplateResult {
         var keyContent: TemplateResult;
-        var keyStyle: string = `width: calc((100% * (1/${this.columnCount})) - (2 * var(--hakp-key-padding)));`;
+        var keySizeCss: string = `calc((100% * (1/${this.columnCount})) - (2 * var(--hakp-key-padding)));`;
 
         if (isString(key.key) && key.key.match(ICON_REGEX)) {
             keyContent = html`<ha-icon icon="${key.key}"></ha-icon>`;
@@ -103,9 +103,11 @@ export class HaKeypadSelector extends LitElement {
         }
 
         return html`
-            <md-text-button class="hakp-key" style="${keyStyle}" @click=${() => this.onKeyPressed(key.value ?? key.key)}>
-                ${keyContent}
-            </md-text-button>
+            <div class="hakp-key" style="width: ${keySizeCss}; padding-top: ${keySizeCss};">
+                <md-text-button class="hakp-key-button" @click=${() => this.onKeyPressed(key.value ?? key.key)}>
+                    ${keyContent}
+                </md-text-button>
+            </div>
         `;
     }
 
@@ -193,9 +195,16 @@ export class HaKeypadSelector extends LitElement {
             }
             
             .hakp-key {
-                padding: var(--hakp-key-padding);
-                aspect-ratio: 1 / 1;
-                
+                position: relative;
+            }
+
+            .hakp-key-button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                padding: var(--hakp-key-padding);                
             }          
         `;
     }
