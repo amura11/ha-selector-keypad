@@ -139,6 +139,6 @@ As values can contain multiple characters, eg `abc` or `123`, each value is trea
 [releases]: https://github.com/amura11/ha-selector-keypad/releases
 [hacs]: https://github.com/hacs/integration
 [hacsbadge]: https://img.shields.io/badge/HACS-Custom-orange.svg?style=for-the-badge
-[validation-shield]: https://img.shields.io/github/actions/workflow/status/amura11/ha-selector-keypad/validate.yml?style=for-the-badge&label=HACS%20Validation
+[validation-shield]: https://img.shields.io/github/actions/workflow/status/amura11/ha-selector-keypad/validate.yaml?style=for-the-badge&label=HACS%20Validation
 [validation]: https://github.com/amura11/ha-selector-keypad/actions/workflows/validate.yml
 [license-shield]: https://img.shields.io/github/license/amura11/ha-selector-keypad.svg?style=for-the-badge
