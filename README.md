@@ -11,7 +11,7 @@ A simple keypad [selector](https://www.home-assistant.io/docs/blueprint/selector
 ## Examples
 
 ### Basic
-<img align="right" width="300px" style="margin-left: 1.25em;" src="basic-example.png">
+<img align="right" width="300px" style="margin-left: 1.25em;" src="./resources/basic-example.png">
 
 ```
 service: browser_mod.popup
@@ -28,7 +28,7 @@ data:
 
 ### Kitchen Sink
 
-<img align="right" width="300px" style="margin-left: 1.25em;" src="kitchen-sink-example.png">
+<img align="right" width="300px" style="margin-left: 1.25em;" src="./resources/kitchen-sink-example.png">
 
 ```
 service: browser_mod.popup
@@ -134,6 +134,40 @@ The labels for these can be customized the same as regular keys and will default
 
 As values can contain multiple characters, eg `abc` or `123`, each value is treated as a single token and all of the logic in the keypad works off of tokens. For example, when masking a key with a value of `123` with the `*` character you would only see 1 `*` each time you pressed that key. The delete key works in a similar way, if you pressed the same key twice (without a mask) you would see `123123` then pressed delete the resulting code would be `123`.
 
+## Styling Options
+
+### General
+Variable | Description | Default
+-- | -- | -- 
+`--hakp-font-family` | The font family of the entire control | `Roboto`
+`--hakp-text-color` | The text color for the entire control | `--primary-text-color` or `rgb(221, 221, 221)`
+
+### Code Display
+Variable | Description | Default
+-- | -- | -- 
+`--hakp-code-font-size` | The font size of the code | `2.5rem`
+`--hakp-code-font-weight` | The font weight of the code | `600`
+`--hakp-code-color` | The text color of the code | `--hakp-text-color`
+
+### Code Label
+Variable | Description | Default
+-- | -- | -- 
+`--hakp-code-label-font-size` | The font size of the label | `1.75rem`
+`--hakp-code-label-font-weight` | The font weight of the label | `500`
+`--hakp-code-label-color` | The text color of the label | `--hakp-text-color`
+
+### Keypad
+Variable | Description | Default
+-- | -- | -- 
+`--hakp-keypad-max-width` | The maximum width of the keypad | `300px`
+
+### Keys
+Variable | Description | Default
+-- | -- | -- 
+`--hakp-key-font-size` | The font size of the key | `1.5rem`
+`--hakp-key-font-weight` | The font weight of the key | `600`
+`--hakp-key-color` | The text color of the key | `--hakp-text-color`
+`--hakp-key-padding` | The padding around the key | `8px`
 
 [releases-shield]: https://img.shields.io/github/release/amura11/ha-selector-keypad.svg?style=for-the-badge
 [releases]: https://github.com/amura11/ha-selector-keypad/releases
